@@ -1,83 +1,90 @@
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Saint Michael Academy School Canteen</title>
-<link rel="stylesheet" href="style.css">
-</head>
-
-<body>
-
-<header class="main-header">
-    <div class="logo-area">
-        <img src="logo.png" alt="School Logo">
-        <h1>Saint Michael Academy<br><span>School Canteen</span></h1>
-    </div>
-
-    <div class="user-bar">
-        <span id="studentName"></span>
-        <div class="cart-btn">🛒 <span id="cartCount">0</span></div>
-        <button id="logoutBtn">Logout</button>
-    </div>
-</header>
-
-<!-- LOGIN -->
-<section id="loginSection" class="card">
-    <h2>Student Login</h2>
-    <input id="username" placeholder="Student Name">
-    <input id="password" type="password" placeholder="Password">
-    <button id="loginBtn">Login</button>
-    <p class="hint">Student: 1234 | Admin: admin / admin123</p>
-</section>
-
-<!-- MENU -->
-<section id="menuSection" style="display:none;">
-    <h2 class="section-title">Canteen Menu</h2>
-
-    <h3>Snacks</h3>
-    <div class="menu-grid">
-        <div class="item">
-            <img src="burger.jpg">
-            <h4>Burger</h4>
-            <p>₱50</p>
-            <button onclick="addToCart('Burger',50)">Add</button>
-        </div>
-
-        <div class="item">
-            <img src="fries.jpg">
-            <h4>Fries</h4>
-            <p>₱30</p>
-            <button onclick="addToCart('Fries',30)">Add</button>
-        </div>
-    </div>
-
-    <h3>Drinks</h3>
-    <div class="menu-grid">
-        <div class="item">
-            <img src="icedtea.jpg">
-            <h4>Iced Tea</h4>
-            <p>₱20</p>
-            <button onclick="addToCart('Iced Tea',20)">Add</button>
-        </div>
-    </div>
-
-    <div class="checkout">
-        <h3>Total: ₱<span id="total">0</span></h3>
-        <button onclick="placeOrder()">Place Order</button>
-        <button class="danger" onclick="clearCart()">Cancel Order</button>
-    </div>
-</section>
-
-<!-- CART MODAL -->
-<div id="cartModal" class="modal">
-    <div class="modal-box">
-        <h3>Your Cart</h3>
-        <ul id="cartList"></ul>
-        <button onclick="closeCart()">Close</button>
-    </div>
-</div>
-
-<script src="script.js"></script>
-</body>
+    <head> 
+        <meta charset="UTF-8"> 
+        <title>School Canteen Ordering</title> 
+        <link rel="stylesheet" href="style.css"> 
+</head> 
+<body> 
+    
+<header> 
+    <h1>🏫 School Canteen</h1> 
+    <div class="user-area"> 
+        <span id="studentName"></span> 
+        <button id="logoutBtn">Logout</button> 
+        <div class="cart">🛒 
+            <span class="cart-count">0</span>
+        </div> 
+    </div> 
+</header> 
+    
+<!-- LOGIN --> 
+<section id="Login"> 
+    <h2>Student Login</h2> 
+    <input type="text" id="username" placeholder="Student Name"> 
+    <input type="password" id="password" placeholder="Password"> 
+    <button id="loginBtn">Login</button> 
+    <p class="hint">Student password: <b>1234</b> | Admin: <b>admin / admin123</b></p> 
+</section> 
+    
+<!-- HOME --> 
+<section id="Home" style="display:none;"> 
+    <h2>Welcome to the School Canteen</h2> 
+    <p>Please order responsibly during school hours.</p> 
+</section> 
+    
+<!-- MENU --> 
+<section id="Menu" style="display:none;"> 
+    <h2>Canteen Menu</h2> 
+    
+    <div class="menu-grid"> 
+        <div class="item"> 
+            <h3>Burger</h3> 
+            <p>₱50</p> 
+            <input type="number" min="1" value="1" class="qty"> 
+            <button class="add-to-cart" data-item="Burger" data-price="50">Add</button> 
+        </div> 
+        
+        <div class="item"> 
+            <h3>Fries</h3> 
+            <p>₱30</p> 
+            <input type="number" min="1" value="1" class="qty"> 
+            <button class="add-to-cart" data-item="Fries" data-price="30">Add</button> 
+        </div> 
+        
+        <div class="item"> 
+            <h3>Iced Tea</h3> 
+            <p>₱20</p> 
+            <input type="number" min="1" value="1" class="qty"> 
+            <button class="add-to-cart" data-item="Iced Tea" data-price="20">Add</button> 
+        </div> 
+    </div> 
+    
+    <div class="checkout"> 
+        <h3>Total: ₱<span id="total">0</span></h3> 
+        
+        <label>Pickup Time:</label> 
+        <input type="time" id="pickupTime"> 
+        
+        <label>Payment Method:</label> 
+        <select id="payment"> 
+            <option>Pay at Counter</option> 
+            <option>Online Payment</option> 
+        </select> 
+        
+        <button id="placeOrder">Place Order</button> 
+    </div> 
+</section> 
+    
+<!-- ORDER MODAL --> 
+<div id="orderModal" class="modal"> 
+    <div class="modal-content"> 
+        <h3>Your Order</h3> 
+        <ul id="orderList"></ul> 
+        <button onclick="closeModal()">Close</button> 
+    </div> 
+</div> 
+    
+<script src="script.js"></script> 
+</body> 
 </html>
