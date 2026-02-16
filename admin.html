@@ -1,43 +1,35 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Admin Portal</title>
-    <link rel="stylesheet" href="style.css">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Panel</title>
+<link rel="stylesheet" href="style.css">
 </head>
-<body>
 
-<header>
-    <h1>Admin Portal</h1>
-</header>
+<body class="admin">
 
-<section class="card">
-    <h2>Student Orders</h2>
-    <div id="orders"></div>
-</section>
+<h2>Admin Dashboard</h2>
+<div id="orders"></div>
 
 <script>
 const ordersDiv = document.getElementById("orders");
 
-function loadOrders() {
-    ordersDiv.innerHTML = "";
+for (let i = 0; i < localStorage.length; i++) {
+    const key = localStorage.key(i);
+    if (!key.startsWith("order_")) continue;
 
-    for (let i = 0; i < localStorage.length; i++) {
-        const key = localStorage.key(i);
-        if (!key.startsWith("order_")) continue;
+    const order = JSON.parse(localStorage.getItem(key));
 
-        const order = JSON.parse(localStorage.getItem(key));
-
-        const div = document.createElement("div");
-        div.className = "order-card";
-        div.innerHTML = `
-            <h3>Order #${order.orderNumber}</h3>
-            <p><b>Student:</b> ${order.student}</p>
-            <p><b>Total:</b> ₱${order.total}</p>
-            <p><b>Status:</b> ${order.status}</p>
-            <button onclick="markReady('${key}')">Mark Ready</button>
-        `;
-        ordersDiv.appendChild(div);
-    }
+    const card = document.createElement("div");
+    card.className = "admin-card";
+    card.innerHTML = `
+        <h4>Order #${order.orderNumber}</h4>
+        <p><b>Student:</b> ${order.student}</p>
+        <p><b>Total:</b> ₱${order.total}</p>
+        <p><b>Status:</b> ${order.status}</p>
+        <button onclick="markReady('${key}')">Mark READY</button>
+    `;
+    ordersDiv.appendChild(card);
 }
 
 function markReady(key) {
@@ -45,10 +37,8 @@ function markReady(key) {
     order.status = "READY";
     localStorage.setItem(key, JSON.stringify(order));
     alert("Order marked READY");
-    loadOrders();
+    location.reload();
 }
-
-loadOrders();
 </script>
 
 </body>
