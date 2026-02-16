@@ -1,99 +1,69 @@
-document.addEventListener("DOMContentLoaded", () => {
+let currentUser = null;
+let cart = [];
+let total = 0;
 
-    let currentUser = null;
-    let cart = [];
-    let total = 0;
+const cartCount = document.getElementById("cartCount");
+const totalSpan = document.getElementById("total");
 
-    const loginBtn = document.getElementById("loginBtn");
-    const username = document.getElementById("username");
-    const password = document.getElementById("password");
-    const Login = document.getElementById("Login");
-    const Home = document.getElementById("Home");
-    const Menu = document.getElementById("Menu");
-    const studentName = document.getElementById("studentName");
-    const logoutBtn = document.getElementById("logoutBtn");
-    const cartCount = document.querySelector(".cart-count");
-    const totalSpan = document.getElementById("total");
-    const placeOrder = document.getElementById("placeOrder");
+// LOGIN
+loginBtn.onclick = () => {
+    if (username.value === "admin" && password.value === "admin123") {
+        location.href = "admin.html";
+        return;
+    }
 
-    // LOGIN
-    loginBtn.addEventListener("click", () => {
+    if (password.value === "1234" && username.value) {
+        currentUser = username.value;
+        studentName.textContent = "Hi, " + currentUser;
+        loginSection.style.display = "none";
+        menuSection.style.display = "block";
+    } else alert("Invalid login");
+};
 
-        const u = username.value.trim();
-        const p = password.value.trim();
+// CART
+function addToCart(item, price) {
+    cart.push({ item, price });
+    total += price;
+    cartCount.textContent = cart.length;
+    totalSpan.textContent = total;
+}
 
-        if (u === "admin" && p === "admin123") {
-            location.href = "admin.html";
-            return;
+// PLACE ORDER
+function placeOrder() {
+    if (!cart.length) return alert("Cart empty");
+
+    const orderNumber = Math.floor(1000 + Math.random() * 9000);
+    const order = {
+        orderNumber,
+        student: currentUser,
+        cart,
+        total,
+        status: "PENDING"
+    };
+
+    localStorage.setItem("order_" + orderNumber, JSON.stringify(order));
+    alert(`Order placed! Order #${orderNumber}`);
+    clearCart();
+}
+
+// CLEAR
+function clearCart() {
+    cart = [];
+    total = 0;
+    cartCount.textContent = 0;
+    totalSpan.textContent = 0;
+}
+
+// READY NOTIFICATION
+setInterval(() => {
+    for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        if (!key.startsWith("order_")) continue;
+
+        const order = JSON.parse(localStorage.getItem(key));
+        if (order.student === currentUser && order.status === "READY") {
+            alert(`Order #${order.orderNumber} is READY for pickup!`);
+            localStorage.removeItem(key);
         }
-
-        if (u && p === "1234") {
-            currentUser = u;
-            studentName.textContent = "Hi, " + u;
-
-            Login.style.display = "none";
-            Home.style.display = "block";
-            Menu.style.display = "block";
-
-            cart = [];
-            total = 0;
-            cartCount.textContent = "0";
-            totalSpan.textContent = "0";
-
-        } else {
-            alert("Invalid login");
-        }
-    });
-
-    // ADD TO CART
-    document.querySelectorAll(".add-to-cart").forEach(btn => {
-        btn.addEventListener("click", () => {
-
-            if (!currentUser) {
-                alert("Please login first");
-                return;
-            }
-
-            const qtyInput = btn.previousElementSibling;
-            const qty = parseInt(qtyInput.value);
-            const price = parseInt(btn.dataset.price);
-
-            const item = {
-                name: btn.dataset.item,
-                qty,
-                price
-            };
-
-            cart.push(item);
-            total += qty * price;
-
-            cartCount.textContent = cart.length;
-            totalSpan.textContent = total;
-        });
-    });
-
-    // PLACE ORDER
-    placeOrder.addEventListener("click", () => {
-
-        if (!currentUser) return alert("Login first");
-        if (!cart.length) return alert("Cart is empty");
-
-        const orderNumber = Math.floor(Math.random() * 9000) + 1000; // short number
-
-        const order = {
-            orderNumber,
-            student: currentUser,
-            cart,
-            total,
-            status: "PENDING"
-        };
-
-        localStorage.setItem("order_" + orderNumber, JSON.stringify(order));
-
-        alert("Order placed! Order #" + orderNumber);
-        location.reload();
-    });
-
-    // LOGOUT
-    logoutBtn.addEventListener("click", () => location.reload());
-});
+    }
+}, 4000);
