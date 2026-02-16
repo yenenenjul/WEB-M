@@ -1,88 +1,80 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Saint Michael Academy School Canteen</title>
-    <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Saint Michael Academy School Canteen</title>
+<link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
-<header>
+<header class="main-header">
     <div class="logo-area">
-        <div class="logo-placeholder">LOGO</div>
+        <img src="logo.png" alt="School Logo">
         <h1>Saint Michael Academy<br><span>School Canteen</span></h1>
     </div>
 
-    <div class="user-area">
+    <div class="user-bar">
         <span id="studentName"></span>
+        <div class="cart-btn">🛒 <span id="cartCount">0</span></div>
         <button id="logoutBtn">Logout</button>
-        <div class="cart">🛒 <span class="cart-count">0</span></div>
     </div>
 </header>
 
 <!-- LOGIN -->
-<section id="Login" class="card">
+<section id="loginSection" class="card">
     <h2>Student Login</h2>
-    <input type="text" id="username" placeholder="Username">
-    <input type="password" id="password" placeholder="Password">
+    <input id="username" placeholder="Student Name">
+    <input id="password" type="password" placeholder="Password">
     <button id="loginBtn">Login</button>
-    <p class="hint">Student: <b>student / 1234</b> | Admin: <b>admin / admin123</b></p>
+    <p class="hint">Student: 1234 | Admin: admin / admin123</p>
 </section>
 
 <!-- MENU -->
-<section id="Menu" style="display:none;">
-    <h2>Canteen Menu</h2>
+<section id="menuSection" style="display:none;">
+    <h2 class="section-title">Canteen Menu</h2>
 
-    <!-- CATEGORIES -->
-    <div class="categories">
-        <button data-category="all">All</button>
-        <button data-category="snacks">Snacks</button>
-        <button data-category="lunch">Lunch</button>
-        <button data-category="drinks">Drinks</button>
-    </div>
-
+    <h3>Snacks</h3>
     <div class="menu-grid">
-
-        <div class="item" data-category="lunch">
+        <div class="item">
             <img src="burger.jpg">
-            <h3>Burger</h3>
+            <h4>Burger</h4>
             <p>₱50</p>
-            <input type="number" min="1" value="1" class="qty">
-            <button class="add-to-cart" data-item="Burger" data-price="50">Add</button>
+            <button onclick="addToCart('Burger',50)">Add</button>
         </div>
 
-        <div class="item" data-category="snacks">
+        <div class="item">
             <img src="fries.jpg">
-            <h3>Fries</h3>
+            <h4>Fries</h4>
             <p>₱30</p>
-            <input type="number" min="1" value="1" class="qty">
-            <button class="add-to-cart" data-item="Fries" data-price="30">Add</button>
+            <button onclick="addToCart('Fries',30)">Add</button>
         </div>
-
-        <div class="item" data-category="drinks">
-            <img src="icedtea.jpg">
-            <h3>Iced Tea</h3>
-            <p>₱20</p>
-            <input type="number" min="1" value="1" class="qty">
-            <button class="add-to-cart" data-item="Iced Tea" data-price="20">Add</button>
-        </div>
-
     </div>
 
-    <div class="checkout card">
+    <h3>Drinks</h3>
+    <div class="menu-grid">
+        <div class="item">
+            <img src="icedtea.jpg">
+            <h4>Iced Tea</h4>
+            <p>₱20</p>
+            <button onclick="addToCart('Iced Tea',20)">Add</button>
+        </div>
+    </div>
+
+    <div class="checkout">
         <h3>Total: ₱<span id="total">0</span></h3>
-        <button id="placeOrder">Place Order</button>
-        <button id="cancelOrder" class="danger">Cancel Order</button>
+        <button onclick="placeOrder()">Place Order</button>
+        <button class="danger" onclick="clearCart()">Cancel Order</button>
     </div>
 </section>
 
 <!-- CART MODAL -->
-<div id="orderModal" class="modal">
-    <div class="modal-content">
+<div id="cartModal" class="modal">
+    <div class="modal-box">
         <h3>Your Cart</h3>
-        <ul id="orderList"></ul>
-        <button onclick="closeModal()">Close</button>
+        <ul id="cartList"></ul>
+        <button onclick="closeCart()">Close</button>
     </div>
 </div>
 
